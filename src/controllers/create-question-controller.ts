@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, UsePipes } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CurrentUser } from "src/auth/current-user-decorator";
@@ -31,7 +31,7 @@ export class CreateQuestionController {
         authorId: user.sub,
         title,
         content,
-        slug: content
+        slug: title
           .toLowerCase()
           .normalize("NFD")
           .trimStart()
