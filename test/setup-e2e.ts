@@ -1,7 +1,7 @@
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { execSync } from "child_process";
-import { randomUUID } from "crypto";
-import "dotenv/config";
+import { randomUUID } from "node:crypto";
 
 const prisma = new PrismaClient();
 
@@ -22,10 +22,10 @@ beforeAll(async () => {
   const databaseUrl = generateUniqueDatabaseUrl(schemaId);
   process.env.DATABASE_URL = databaseUrl;
 
-  execSync("npm prisma migrate deploy");
+  execSync("npx prisma migrate deploy");
 });
 
 afterAll(async () => {
-  await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS ${schemaId} CASCADE`);
+  await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId}" CASCADE`);
   await prisma.$disconnect();
 });
