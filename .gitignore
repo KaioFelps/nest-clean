@@ -38,3 +38,5 @@ lerna-debug.log*
 
 /data/pg/**
 .env
+private_key.pem
+public_key.pem
