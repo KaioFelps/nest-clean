@@ -4,6 +4,7 @@ import { IQuestionRepository } from "../repositories/question-repository-interfa
 import { Either, right } from "@/core/either";
 import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
 import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
+import { Injectable } from "@nestjs/common";
 
 interface ICreateQuestionService {
   authorId: string;
@@ -14,6 +15,7 @@ interface ICreateQuestionService {
 
 type ICreateQuestionResponse = Either<null, { question: Question }>;
 
+@Injectable()
 export class CreateQuestionService {
   constructor(private questionRepository: IQuestionRepository) {}
 
