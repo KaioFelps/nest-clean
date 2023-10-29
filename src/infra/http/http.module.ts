@@ -6,9 +6,10 @@ import { FetchRecentQuestionsController } from "./controllers/fetch-recent-quest
 import { DatabaseModule } from "../database/database.module";
 import { CreateQuestionService } from "@/domain/forum/application/services/create-question";
 import { FetchLatestQuestionsService } from "@/domain/forum/application/services/fetch-latest-questions";
+import { CryptographyModule } from "../cryptography/cryptography.module";
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, CryptographyModule],
   controllers: [
     CreateAccountController,
     AuthenticateController,
