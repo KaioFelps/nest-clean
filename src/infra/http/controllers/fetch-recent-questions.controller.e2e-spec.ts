@@ -1,5 +1,5 @@
-import { AppModule } from "@/app.module";
-import { PrismaService } from "@/prisma/prisma.service";
+import { AppModule } from "@/infra/app.module";
+import { PrismaService } from "@/infra/prisma/prisma.service";
 import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
@@ -11,7 +11,7 @@ describe("Fetch latest questions (E2E)", () => {
   let prisma: PrismaService;
   let jwt: JwtService;
 
-  function createSlugFromTitle(title) {
+  function createSlugFromTitle(title: string) {
     return title
       .toLowerCase()
       .normalize("NFD")
@@ -71,15 +71,15 @@ describe("Fetch latest questions (E2E)", () => {
       ],
     });
 
-    const accessToken = await jwt.sign({ sub: user.id });
+    const accessToken = await jwt.signAsync({ sub: user.id });
 
     const response = await request(app.getHttpServer())
       .get("/questions")
       .set({ Authorization: `Bearer ${accessToken}` });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBe(3);
-    expect(response.body[0]).toEqual(
+    expect(response.body.questions.length).toBe(3);
+    expect(response.body.questions[0]).toEqual(
       expect.objectContaining({
         title: "Sair do jogo",
         content: "Olá, bom dia!\n Quer sair do jogo?",
