@@ -9,7 +9,7 @@ import { IEncrypter } from "@/domain/forum/application/cryptography/encrypter";
   providers: [
     { provide: IHashComparer, useClass: BcryptHasher },
     { provide: IHashGenerator, useClass: BcryptHasher },
-    { provide: IHashGenerator, useClass: JwtEncrypter },
+    { provide: IEncrypter, useClass: JwtEncrypter },
   ],
   exports: [IEncrypter, IHashGenerator, IHashComparer],
 })
