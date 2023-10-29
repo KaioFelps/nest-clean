@@ -10,7 +10,7 @@ export interface IQuestion {
   bestAnswerId?: UniqueEntityId | null;
   title: string;
   content: string;
-  slug?: Slug;
+  slug: Slug;
   attachments: QuestionAttachmentList;
   createdAt: Date;
   updatedAt?: Date | null;
