@@ -1,8 +1,9 @@
 import { Controller, Get, Query, UseGuards, UsePipes } from "@nestjs/common";
 import { JwtAuthGuard } from "@/infra/auth/jwt-auth.guard";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
-import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { z } from "zod";
+import { FetchLatestQuestionsService } from "@/domain/forum/application/services/fetch-latest-questions";
+import { QuestionPresenter } from "../presenters/question-presenter";
 
 const pageQueryParamSchema = z
   .string()
@@ -18,21 +19,27 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema);
 @Controller("/questions")
 @UseGuards(JwtAuthGuard)
 export class FetchRecentQuestionsController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private fetchLatestQuestions: FetchLatestQuestionsService) {}
 
   @Get()
   @UsePipes(queryValidationPipe)
   async handle(@Query("page") page: PageQueryParam) {
-    const PER_PAGE = 10;
-
-    const questions = await this.prisma.question.findMany({
-      take: PER_PAGE,
-      skip: (page - 1) * PER_PAGE,
-      orderBy: {
-        createdAt: "desc",
-      },
+    const result = await this.fetchLatestQuestions.execute({
+      page,
     });
 
-    return { questions };
+    const mappedQuestions: unknown[] = [];
+
+    if (result.isLeft()) {
+      throw new Error("");
+    }
+
+    const questions = result.value.questions;
+
+    for (let i = 0; i < questions.length; i++) {
+      mappedQuestions.push(QuestionPresenter.toHTTP(questions[i]));
+    }
+
+    return { questions: mappedQuestions };
   }
 }
