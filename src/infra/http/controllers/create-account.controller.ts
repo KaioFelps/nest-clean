@@ -1,6 +1,14 @@
-import { Body, Controller, Post, UsePipes } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  Post,
+  UsePipes,
+} from "@nestjs/common";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
+import { StudentAlreadyExistsError } from "@/domain/forum/application/services/errors/student-already-exists-error";
 import { RegisterStudentService } from "@/domain/forum/application/services/register-student";
 
 const createAccountBodySchema = z.object({
@@ -27,7 +35,15 @@ export class CreateAccountController {
     });
 
     if (response.isLeft()) {
-      throw new Error();
+      const error = response.value;
+
+      switch (error.constructor) {
+        case StudentAlreadyExistsError:
+          throw new ConflictException(error.message);
+          break;
+        default:
+          throw new BadRequestException(error.message);
+      }
     }
   }
 }
