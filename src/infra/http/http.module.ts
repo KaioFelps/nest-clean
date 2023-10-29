@@ -8,6 +8,7 @@ import { CreateQuestionService } from "@/domain/forum/application/services/creat
 import { FetchLatestQuestionsService } from "@/domain/forum/application/services/fetch-latest-questions";
 import { CryptographyModule } from "../cryptography/cryptography.module";
 import { AuthenticateStudentService } from "@/domain/forum/application/services/authenticate-student";
+import { RegisterStudentService } from "@/domain/forum/application/services/register-student";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -21,6 +22,7 @@ import { AuthenticateStudentService } from "@/domain/forum/application/services/
     CreateQuestionService,
     FetchLatestQuestionsService,
     AuthenticateStudentService,
+    RegisterStudentService,
   ],
 })
 export class HttpModule {}
