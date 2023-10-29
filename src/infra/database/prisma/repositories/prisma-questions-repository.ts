@@ -78,7 +78,6 @@ export class PrismaQuestionsRepository implements IQuestionRepository {
     if (questions.length > 0) {
       for (let i = 0; i < questions.length; i++) {
         mappedQuestions.push(PrismaQuestionMapper.toDomain(questions[i]));
-        i++;
       }
     }
 
