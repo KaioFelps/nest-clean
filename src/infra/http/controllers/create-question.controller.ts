@@ -1,5 +1,4 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "@/infra/auth/jwt-auth.guard";
+import { Body, Controller, Post } from "@nestjs/common";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { userTokenPayload } from "@/infra/auth/jwt.strategy";
 import { z } from "zod";
@@ -14,7 +13,8 @@ const createQuestionBodySchema = z.object({
 type CreateQuestionBody = z.infer<typeof createQuestionBodySchema>;
 
 @Controller("/questions")
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
+// não é mais necessário, pois um guard global foi setado no auth module
 export class CreateQuestionController {
   constructor(private createQuestion: CreateQuestionService) {}
 

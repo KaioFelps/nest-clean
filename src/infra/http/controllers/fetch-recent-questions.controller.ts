@@ -1,5 +1,4 @@
-import { Controller, Get, Query, UseGuards, UsePipes } from "@nestjs/common";
-import { JwtAuthGuard } from "@/infra/auth/jwt-auth.guard";
+import { Controller, Get, Query, UsePipes } from "@nestjs/common";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { FetchLatestQuestionsService } from "@/domain/forum/application/services/fetch-latest-questions";
@@ -17,7 +16,8 @@ type PageQueryParam = z.infer<typeof pageQueryParamSchema>;
 const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema);
 
 @Controller("/questions")
-@UseGuards(JwtAuthGuard)
+// @UseGuards(JwtAuthGuard)
+// não é mais necessário, pois um guard global foi setado no auth module
 export class FetchRecentQuestionsController {
   constructor(private fetchLatestQuestions: FetchLatestQuestionsService) {}
 
