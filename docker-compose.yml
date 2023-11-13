@@ -3,7 +3,7 @@ version: "3.8"
 services:
   postgres:
     container_name: nest-clean-postgres
-    mem_limit: "1g"
+    mem_limit: "512mb"
     mem_reservation: "512mb"
     image: postgres
     ports:
