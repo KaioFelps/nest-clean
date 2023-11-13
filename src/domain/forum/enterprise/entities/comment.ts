@@ -5,7 +5,7 @@ export interface IComment {
   authorId: UniqueEntityId;
   content: string;
   createdAt: Date;
-  updatedAt?: Date;
+  updatedAt?: Date | null;
 }
 
 // abstract indica que ela nunca pode ser instanciada sozinha (new Class), mas somente estendida (implements Class)
