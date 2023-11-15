@@ -4,8 +4,14 @@ import {
   IQuestion,
   Question,
 } from "@/domain/forum/enterprise/entities/question";
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { PrismaQuestionMapper } from "@/infra/database/prisma/mappers/prisma-question-mapper";
 
+@Injectable()
 export class MakeQuestionFactory {
+  constructor(private prisma: PrismaService) {}
+
   static execute(override: Partial<IQuestion> = {}, id?: UniqueEntityId) {
     const question = Question.create(
       {
@@ -18,5 +24,15 @@ export class MakeQuestionFactory {
     );
 
     return question;
+  }
+
+  async createAndPersist(data: Partial<IQuestion> = {}): Promise<IQuestion> {
+    const student = MakeQuestionFactory.execute(data);
+
+    await this.prisma.question.create({
+      data: PrismaQuestionMapper.toPrisma(student),
+    });
+
+    return student;
   }
 }

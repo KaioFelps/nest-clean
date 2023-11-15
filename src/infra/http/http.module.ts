@@ -9,6 +9,8 @@ import { FetchLatestQuestionsService } from "@/domain/forum/application/services
 import { CryptographyModule } from "../cryptography/cryptography.module";
 import { AuthenticateStudentService } from "@/domain/forum/application/services/authenticate-student";
 import { RegisterStudentService } from "@/domain/forum/application/services/register-student";
+import { GetQuestionBySlugController } from "./controllers/get-question-by-slug.controller";
+import { GetQuestionBySlugService } from "@/domain/forum/application/services/get-question-by-slug";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -17,12 +19,14 @@ import { RegisterStudentService } from "@/domain/forum/application/services/regi
     AuthenticateController,
     CreateQuestionController,
     FetchRecentQuestionsController,
+    GetQuestionBySlugController,
   ],
   providers: [
     CreateQuestionService,
     FetchLatestQuestionsService,
     AuthenticateStudentService,
     RegisterStudentService,
+    GetQuestionBySlugService,
   ],
 })
 export class HttpModule {}
