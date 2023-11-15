@@ -58,11 +58,19 @@ describe("Fetch latest questions (E2E)", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.questions.length).toBe(3);
-    expect(response.body.questions[0]).toEqual(
-      expect.objectContaining({
-        title: "Sair do jogo",
-        content: "Olá, bom dia!\n Quer sair do jogo?",
-      }),
+    expect(response.body.questions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          title: "Sair do jogo",
+          content: "Olá, bom dia!\n Quer sair do jogo?",
+        }),
+        expect.objectContaining({
+          title: "Por que o nordeste está sendo dominado pela juliete?",
+        }),
+        expect.objectContaining({
+          title: "como eu faço pra criar uma pergunta",
+        }),
+      ]),
     );
   });
 });
