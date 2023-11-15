@@ -1,6 +1,6 @@
 import { Either, right } from "@/core/either";
 import { Answer } from "../../enterprise/entities/answer";
-import { IAnswerRepository } from "../repositories/answer-repository-interface";
+import { IAnswerRepository } from "../repositories/answer-repository";
 
 interface IFetchQuestionAnswersService {
   page: number;

@@ -1,6 +1,6 @@
 import { Either, right } from "@/core/either";
 import { Question } from "../../enterprise/entities/question";
-import { IQuestionRepository } from "../repositories/question-repository-interface";
+import { IQuestionRepository } from "../repositories/question-repository";
 import { Injectable } from "@nestjs/common";
 
 interface IFetchLatestQuestionsService {

@@ -1,5 +1,5 @@
 import { Either, left, right } from "@/core/either";
-import { IQuestionRepository } from "../repositories/question-repository-interface";
+import { IQuestionRepository } from "../repositories/question-repository";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { NotAllowedError } from "./errors/not-allowed-error";
 

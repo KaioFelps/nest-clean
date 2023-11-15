@@ -11,6 +11,8 @@ import { AuthenticateStudentService } from "@/domain/forum/application/services/
 import { RegisterStudentService } from "@/domain/forum/application/services/register-student";
 import { GetQuestionBySlugController } from "./controllers/get-question-by-slug.controller";
 import { GetQuestionBySlugService } from "@/domain/forum/application/services/get-question-by-slug";
+import { EditQuestionController } from "./controllers/edit-question.controller";
+import { EditQuestionService } from "@/domain/forum/application/services/edit-question";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -20,6 +22,7 @@ import { GetQuestionBySlugService } from "@/domain/forum/application/services/ge
     CreateQuestionController,
     FetchRecentQuestionsController,
     GetQuestionBySlugController,
+    EditQuestionController,
   ],
   providers: [
     CreateQuestionService,
@@ -27,6 +30,7 @@ import { GetQuestionBySlugService } from "@/domain/forum/application/services/ge
     AuthenticateStudentService,
     RegisterStudentService,
     GetQuestionBySlugService,
+    EditQuestionService,
   ],
 })
 export class HttpModule {}

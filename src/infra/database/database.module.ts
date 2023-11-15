@@ -7,7 +7,7 @@ import { PrismaQuestionsRepository } from "./prisma/repositories/prisma-question
 import { PrismaQuestionCommentsRepository } from "./prisma/repositories/prisma-question-comments-repository";
 import { PrismaQuestionAttachmentsRepository } from "./prisma/repositories/prisma-question-attachments-repository";
 import { PrismaNotificationsRepository } from "./prisma/repositories/prisma-notifications-repository";
-import { IQuestionRepository } from "@/domain/forum/application/repositories/question-repository-interface";
+import { IQuestionRepository } from "@/domain/forum/application/repositories/question-repository";
 import { IStudentRepository } from "@/domain/forum/application/repositories/student-repository";
 import { PrismaStudentsRepository } from "./prisma/repositories/prisma-students-repository";
 

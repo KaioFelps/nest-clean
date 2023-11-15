@@ -1,6 +1,6 @@
 import { Either, left, right } from "@/core/either";
 import { Question } from "../../enterprise/entities/question";
-import { IQuestionRepository } from "../repositories/question-repository-interface";
+import { IQuestionRepository } from "../repositories/question-repository";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { Injectable } from "@nestjs/common";
 

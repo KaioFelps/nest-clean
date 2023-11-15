@@ -1,5 +1,5 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
-import { IAnswerRepository } from "../repositories/answer-repository-interface";
+import { IAnswerRepository } from "../repositories/answer-repository";
 import { AnswerComment } from "../../enterprise/entities/answer-comment";
 import { IAnswerCommentRepository } from "../repositories/answer-comment-repository";
 import { Either, left, right } from "@/core/either";

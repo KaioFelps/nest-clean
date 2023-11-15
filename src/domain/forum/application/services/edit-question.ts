@@ -1,12 +1,13 @@
 import { Either, left, right } from "@/core/either";
 import { Question } from "../../enterprise/entities/question";
-import { IQuestionRepository } from "../repositories/question-repository-interface";
+import { IQuestionRepository } from "../repositories/question-repository";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { NotAllowedError } from "./errors/not-allowed-error";
 import { IQuestionAttachmentRepository } from "../repositories/question-attachment-repository";
 import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
 import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
+import { Injectable } from "@nestjs/common";
 
 interface IEditQuestionService {
   authorId: string;
@@ -21,6 +22,7 @@ type IEditQuestionResponse = Either<
   { question: Question }
 >;
 
+@Injectable()
 export class EditQuestionService {
   constructor(
     private questionRepository: IQuestionRepository,

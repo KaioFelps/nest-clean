@@ -2,7 +2,7 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { EventHandler } from "@/core/events/event-handler";
 import { SendNotificationService } from "../services/send-notification";
 import { QuestionCommentCreatedEvent } from "@/domain/forum/enterprise/events/question-comment-created-event";
-import { IQuestionRepository } from "@/domain/forum/application/repositories/question-repository-interface";
+import { IQuestionRepository } from "@/domain/forum/application/repositories/question-repository";
 
 export class OnQuestionCommentCreated implements EventHandler {
   constructor(

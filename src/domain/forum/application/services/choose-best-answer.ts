@@ -1,6 +1,6 @@
 import { Question } from "../../enterprise/entities/question";
-import { IQuestionRepository } from "../repositories/question-repository-interface";
-import { IAnswerRepository } from "../repositories/answer-repository-interface";
+import { IQuestionRepository } from "../repositories/question-repository";
+import { IAnswerRepository } from "../repositories/answer-repository";
 import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { NotAllowedError } from "./errors/not-allowed-error";
