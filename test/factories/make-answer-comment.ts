@@ -4,8 +4,14 @@ import {
   IAnswerComment,
   AnswerComment,
 } from "@/domain/forum/enterprise/entities/answer-comment";
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { PrismaAnswerCommentMapper } from "@/infra/database/prisma/mappers/prisma-answer-comment-mapper";
 
+@Injectable()
 export class MakeAnswerCommentFactory {
+  constructor(private prisma: PrismaService) {}
+
   static execute(override: Partial<IAnswerComment> = {}, id?: UniqueEntityId) {
     const answercomment = AnswerComment.create(
       {
@@ -16,6 +22,18 @@ export class MakeAnswerCommentFactory {
       },
       id,
     );
+
+    return answercomment;
+  }
+
+  async createAndPersist(
+    data: Partial<IAnswerComment> = {},
+  ): Promise<IAnswerComment> {
+    const answercomment = MakeAnswerCommentFactory.execute(data);
+
+    await this.prisma.comment.create({
+      data: PrismaAnswerCommentMapper.toPrisma(answercomment),
+    });
 
     return answercomment;
   }
