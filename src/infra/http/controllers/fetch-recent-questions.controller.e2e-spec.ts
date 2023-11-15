@@ -1,75 +1,54 @@
+import { Slug } from "@/domain/forum/enterprise/entities/value-objects/slug";
 import { AppModule } from "@/infra/app.module";
-import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { DatabaseModule } from "@/infra/database/database.module";
 import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
-import { hash } from "bcryptjs";
 import request from "supertest";
+import { MakeQuestionFactory } from "test/factories/make-question";
+import { MakeStudentFactory } from "test/factories/make-student";
 
 describe("Fetch latest questions (E2E)", () => {
   let app: INestApplication;
-  let prisma: PrismaService;
   let jwt: JwtService;
-
-  function createSlugFromTitle(title: string) {
-    return title
-      .toLowerCase()
-      .normalize("NFD")
-      .trimStart()
-      .trimEnd()
-      .replaceAll(" ", "_")
-      .replaceAll(/__+/g, "");
-  }
+  let studentFactory: MakeStudentFactory;
+  let questionFactory: MakeQuestionFactory;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
+      providers: [MakeStudentFactory, MakeQuestionFactory],
     }).compile();
 
     app = moduleRef.createNestApplication();
-    prisma = moduleRef.get(PrismaService);
     jwt = moduleRef.get(JwtService);
+    studentFactory = moduleRef.get(MakeStudentFactory);
+    questionFactory = moduleRef.get(MakeQuestionFactory);
 
     await app.init();
   });
 
   test("[GET] /questions", async () => {
-    const user = await prisma.user.create({
-      data: {
-        name: "Kaio Felipe",
-        email: "kaiolacradorlacrademaispracaralho@lacre.karolconka",
-        password: await hash(
-          "kaioconkamamacitalacrantelacradora@2023atualizadosemanuncio",
-          8,
-        ),
-      },
-    });
+    const user = await studentFactory.createAndPersist();
 
-    await prisma.question.createMany({
-      data: [
-        {
-          title: "Sair do jogo",
-          content: "Olá, bom dia!\n Quer sair do jogo?",
-          authorId: user.id,
-          slug: createSlugFromTitle("Sair do jogo"),
-        },
-        {
-          title: "Por que o nordeste está sendo dominado pela juliete?",
-          content:
-            "Li uma notícia no G1 que a jojo todynho falou que a juliete tá escravizando todo mundo e fazendo eles viverem de tapioca.",
-          authorId: user.id,
-          slug: createSlugFromTitle(
-            "Por que o nordeste está sendo dominado pela juliete?",
-          ),
-        },
-        {
-          title: "como eu faço pra criar uma pergunta",
-          content: "não consigo criar uma pergunta",
-          authorId: user.id,
-          slug: createSlugFromTitle("como eu faço pra criar uma pergunta"),
-        },
-      ],
-    });
+    await Promise.all([
+      await questionFactory.createAndPersist({
+        title: "Sair do jogo",
+        content: "Olá, bom dia!\n Quer sair do jogo?",
+        authorId: user.id,
+        slug: Slug.createFromText("Sair do jogo"),
+      }),
+
+      await questionFactory.createAndPersist({
+        title: "Por que o nordeste está sendo dominado pela juliete?",
+        authorId: user.id,
+      }),
+
+      await questionFactory.createAndPersist({
+        title: "como eu faço pra criar uma pergunta",
+        authorId: user.id,
+      }),
+    ]);
 
     const accessToken = await jwt.signAsync({ sub: user.id });
 
