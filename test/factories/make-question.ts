@@ -26,13 +26,13 @@ export class MakeQuestionFactory {
     return question;
   }
 
-  async createAndPersist(data: Partial<IQuestion> = {}): Promise<IQuestion> {
-    const student = MakeQuestionFactory.execute(data);
+  async createAndPersist(data: Partial<IQuestion> = {}): Promise<Question> {
+    const question = MakeQuestionFactory.execute(data);
 
     await this.prisma.question.create({
-      data: PrismaQuestionMapper.toPrisma(student),
+      data: PrismaQuestionMapper.toPrisma(question),
     });
 
-    return student;
+    return question;
   }
 }
