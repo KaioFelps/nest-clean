@@ -10,29 +10,46 @@ import { PrismaNotificationsRepository } from "./prisma/repositories/prisma-noti
 import { IQuestionRepository } from "@/domain/forum/application/repositories/question-repository";
 import { IStudentRepository } from "@/domain/forum/application/repositories/student-repository";
 import { PrismaStudentsRepository } from "./prisma/repositories/prisma-students-repository";
+import { IAnswerRepository } from "@/domain/forum/application/repositories/answer-repository";
+import { IAnswerCommentRepository } from "@/domain/forum/application/repositories/answer-comment-repository";
+import { IAnswerAttachmentRepository } from "@/domain/forum/application/repositories/answer-attachment-repository";
+import { IQuestionCommentRepository } from "@/domain/forum/application/repositories/question-comment-repository";
+import { IQuestionAttachmentRepository } from "@/domain/forum/application/repositories/question-attachment-repository";
 
 @Module({
   providers: [
     PrismaService,
-    PrismaAnswersRepository,
-    PrismaAnswerCommentsRepository,
-    PrismaAnswerAttachmentsRepository,
+    { provide: IAnswerRepository, useClass: PrismaAnswersRepository },
+    {
+      provide: IAnswerCommentRepository,
+      useClass: PrismaAnswerCommentsRepository,
+    },
+    {
+      provide: IAnswerAttachmentRepository,
+      useClass: PrismaAnswerAttachmentsRepository,
+    },
     { provide: IQuestionRepository, useClass: PrismaQuestionsRepository },
     { provide: IStudentRepository, useClass: PrismaStudentsRepository },
-    PrismaQuestionCommentsRepository,
-    PrismaQuestionAttachmentsRepository,
+    {
+      provide: IQuestionCommentRepository,
+      useClass: PrismaQuestionCommentsRepository,
+    },
+    {
+      provide: IQuestionAttachmentRepository,
+      useClass: PrismaQuestionAttachmentsRepository,
+    },
     PrismaNotificationsRepository,
   ],
   // quando se usa o exports, todo módulo que importar este módulo terá acesso ao que este módulo está exportando
   exports: [
     PrismaService,
-    PrismaAnswersRepository,
-    PrismaAnswerCommentsRepository,
-    PrismaAnswerAttachmentsRepository,
+    IAnswerRepository,
+    IAnswerCommentRepository,
+    IAnswerAttachmentRepository,
     IQuestionRepository,
     IStudentRepository,
-    PrismaQuestionCommentsRepository,
-    PrismaQuestionAttachmentsRepository,
+    IQuestionCommentRepository,
+    IQuestionAttachmentRepository,
     PrismaNotificationsRepository,
   ],
 })
