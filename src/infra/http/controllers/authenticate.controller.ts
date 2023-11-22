@@ -10,6 +10,7 @@ import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { AuthenticateStudentService } from "@/domain/forum/application/services/authenticate-student";
 import { WrongCredentialsError } from "@/domain/forum/application/services/errors/wrong-credentials-error";
+import { PublicRoute } from "@/infra/auth/public-route-decorator";
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -23,6 +24,7 @@ export class AuthenticateController {
   constructor(private authenticateStudentService: AuthenticateStudentService) {}
 
   @Post()
+  @PublicRoute()
   @UsePipes(new ZodValidationPipe(authenticateBodySchema))
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, password } = body;

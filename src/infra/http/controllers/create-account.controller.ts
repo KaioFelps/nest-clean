@@ -10,6 +10,7 @@ import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { StudentAlreadyExistsError } from "@/domain/forum/application/services/errors/student-already-exists-error";
 import { RegisterStudentService } from "@/domain/forum/application/services/register-student";
+import { PublicRoute } from "@/infra/auth/public-route-decorator";
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -20,6 +21,7 @@ const createAccountBodySchema = z.object({
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>;
 
 @Controller("/accounts")
+@PublicRoute()
 @UsePipes(new ZodValidationPipe(createAccountBodySchema))
 export class CreateAccountController {
   constructor(private registerStudentService: RegisterStudentService) {}

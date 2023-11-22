@@ -87,7 +87,7 @@ export class Question extends AggregateRoot<IQuestion> {
     const question = new Question(
       {
         ...props,
-        slug: props.slug ?? Slug.createFromText(props.title),
+        slug: props.slug ? props.slug : Slug.createFromText(props.title),
         attachments: props.attachments ?? new QuestionAttachmentList(),
         createdAt: props.createdAt ?? new Date(),
       },
