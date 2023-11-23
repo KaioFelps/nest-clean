@@ -30,7 +30,7 @@ describe("Create question (E2E)", () => {
   test("[POST] /questions", async () => {
     const user = await studentFactory.createAndPersist();
 
-    const accessToken = jwt.sign({ sub: user.id });
+    const accessToken = jwt.sign({ sub: user.id.toString() });
 
     const response = await request(app.getHttpServer())
       .post("/questions")

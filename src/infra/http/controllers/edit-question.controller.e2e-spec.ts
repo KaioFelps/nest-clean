@@ -32,7 +32,7 @@ describe("Edit question (E2E)", () => {
 
   test("[PUT] /questions/edit/:id", async () => {
     const user = await studentFactory.createAndPersist();
-    const accessToken = jwt.sign({ sub: user.id });
+    const accessToken = jwt.sign({ sub: user.id.toString() });
 
     const question = await questionFactory.createAndPersist({
       authorId: user.id,

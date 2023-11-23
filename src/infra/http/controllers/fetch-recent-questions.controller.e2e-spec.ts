@@ -50,7 +50,7 @@ describe("Fetch latest questions (E2E)", () => {
       }),
     ]);
 
-    const accessToken = await jwt.signAsync({ sub: user.id });
+    const accessToken = await jwt.signAsync({ sub: user.id.toString() });
 
     const response = await request(app.getHttpServer())
       .get("/questions")

@@ -32,8 +32,6 @@ describe("Get question by slug (E2E)", () => {
   test("[GET] /questions/:slug", async () => {
     const user = await studentFactory.createAndPersist();
 
-    console.log(user);
-
     const accessToken = await jwt.signAsync({ sub: user.id.toString() });
 
     await questionFactory.createAndPersist({
