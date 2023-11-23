@@ -19,7 +19,10 @@ import { IQuestionAttachmentRepository } from "@/domain/forum/application/reposi
 @Module({
   providers: [
     PrismaService,
-    { provide: IAnswerRepository, useClass: PrismaAnswersRepository },
+    {
+      provide: IAnswerRepository,
+      useClass: PrismaAnswersRepository,
+    },
     {
       provide: IAnswerCommentRepository,
       useClass: PrismaAnswerCommentsRepository,
@@ -28,8 +31,14 @@ import { IQuestionAttachmentRepository } from "@/domain/forum/application/reposi
       provide: IAnswerAttachmentRepository,
       useClass: PrismaAnswerAttachmentsRepository,
     },
-    { provide: IQuestionRepository, useClass: PrismaQuestionsRepository },
-    { provide: IStudentRepository, useClass: PrismaStudentsRepository },
+    {
+      provide: IQuestionRepository,
+      useClass: PrismaQuestionsRepository,
+    },
+    {
+      provide: IStudentRepository,
+      useClass: PrismaStudentsRepository,
+    },
     {
       provide: IQuestionCommentRepository,
       useClass: PrismaQuestionCommentsRepository,

@@ -30,8 +30,8 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "title": "novas perguntas 1",
-    "content": "conteúdo da pergunta"
+    "title": "novas perguntas 2",
+    "content": "conteúdo da pergunta 2"
 }
 
 ### 
@@ -45,3 +45,10 @@ Authorization: Bearer {{authToken}}
     "title": "nova pergunta",
     "content": "conteúdo da perguntaa"
 }
+
+###
+
+# @name get_question_by_slug
+GET {{baseUrl}}/questions/nova-perguntas-1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}

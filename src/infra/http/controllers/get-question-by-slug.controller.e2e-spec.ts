@@ -21,6 +21,7 @@ describe("Get question by slug (E2E)", () => {
     }).compile();
 
     app = moduleRef.createNestApplication();
+
     jwt = moduleRef.get(JwtService);
     studentFactory = moduleRef.get(MakeStudentFactory);
     questionFactory = moduleRef.get(MakeQuestionFactory);
@@ -31,7 +32,9 @@ describe("Get question by slug (E2E)", () => {
   test("[GET] /questions/:slug", async () => {
     const user = await studentFactory.createAndPersist();
 
-    const accessToken = await jwt.signAsync({ sub: user.id });
+    console.log(user);
+
+    const accessToken = await jwt.signAsync({ sub: user.id.toString() });
 
     await questionFactory.createAndPersist({
       authorId: user.id,
@@ -42,11 +45,10 @@ describe("Get question by slug (E2E)", () => {
 
     const response = await request(app.getHttpServer())
       .get("/questions/sair-do-jogo")
-      .set({ Authorization: `Bearer ${accessToken}` })
-      .send();
+      .set({ Authorization: `Bearer ${accessToken}` });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.questions[0]).toEqual(
+    expect(response.body.question).toEqual(
       expect.objectContaining({
         title: "Sair do jogo",
         content: "Olá, bom dia!\n Quer sair do jogo?",
