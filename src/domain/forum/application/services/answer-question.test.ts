@@ -20,7 +20,7 @@ describe("Create answer service", () => {
   test("if it's possible to create an answer", async () => {
     const response = await sut.execute({
       questionId: "1",
-      instructorId: "1",
+      authorId: "1",
       content: "Nova resposta",
       attachmentsIds: ["1", "2"],
     });

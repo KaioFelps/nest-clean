@@ -60,6 +60,9 @@ export class PrismaAnswersRepository implements IAnswerRepository {
       orderBy: {
         createdAt: "desc",
       },
+      where: {
+        questionId,
+      },
     });
 
     const mappedAnswers: Answer[] = [];
