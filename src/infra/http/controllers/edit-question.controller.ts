@@ -1,4 +1,11 @@
-import { Controller, Put, Param, Body, HttpCode } from "@nestjs/common";
+import {
+  Controller,
+  Put,
+  Param,
+  Body,
+  HttpCode,
+  BadRequestException,
+} from "@nestjs/common";
 import { EditQuestionService } from "@/domain/forum/application/services/edit-question";
 import { IQuestionRepository } from "@/domain/forum/application/repositories/question-repository";
 import { z } from "zod";
@@ -30,12 +37,17 @@ export class EditQuestionController {
     @CurrentUser() user: userTokenPayload,
   ) {
     const userId = user.sub;
-    await this.editQuestionService.execute({
+
+    const result = await this.editQuestionService.execute({
       attachmentIds: [],
       authorId: userId,
       content,
       questionId,
       title,
     });
+
+    if (result.isLeft()) {
+      throw new BadRequestException();
+    }
   }
 }
