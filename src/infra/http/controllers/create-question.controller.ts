@@ -1,8 +1,8 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { userTokenPayload } from "@/infra/auth/jwt.strategy";
-import { z } from "zod";
 import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
+import { z } from "zod";
 import { CreateQuestionService } from "@/domain/forum/application/services/create-question";
 
 const createQuestionBodySchema = z.object({
@@ -12,25 +12,29 @@ const createQuestionBodySchema = z.object({
 
 type CreateQuestionBody = z.infer<typeof createQuestionBodySchema>;
 
+const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema);
+
+// @UseGuards(JwtAuthGuard) não é mais necessário, pois um guard global foi setado no auth module
 @Controller("/questions")
-// @UseGuards(JwtAuthGuard)
-// não é mais necessário, pois um guard global foi setado no auth module
 export class CreateQuestionController {
-  constructor(private createQuestion: CreateQuestionService) {}
+  constructor(private createQuestionService: CreateQuestionService) {}
 
   @Post()
   async handle(
-    @Body(new ZodValidationPipe(createQuestionBodySchema))
-    body: CreateQuestionBody,
+    @Body(bodyValidationPipe) body: CreateQuestionBody,
     @CurrentUser() user: userTokenPayload,
   ) {
     const { title, content } = body;
 
-    await this.createQuestion.execute({
+    const result = await this.createQuestionService.execute({
       title,
       content,
       authorId: user.sub,
       attachmentsIds: [],
     });
+
+    if (result.isLeft()) {
+      throw new BadRequestException();
+    }
   }
 }
