@@ -13,10 +13,10 @@ type AnswerQuestionBody = z.infer<typeof answerQuestionBodySchema>;
 
 const bodyValidationPipe = new ZodValidationPipe(answerQuestionBodySchema);
 
-@Controller("/questions/:questionId/answer")
 // @UseGuards(JwtAuthGuard)
 // não é mais necessário, pois um guard global foi setado no auth module
 // para tornar público, use o decorator public-route.
+@Controller("/questions/:questionId/answer")
 export class AnswerQuestionController {
   constructor(private answerQuestion: AnswerQuestionService) {}
 

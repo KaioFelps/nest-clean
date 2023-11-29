@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3000
 @authToken = {{authenticate.response.body.access_token}}
+@questionId = {{get_question_by_slug.response.body.question.id}}
 
 # @name create_account
 POST {{baseUrl}}/accounts
@@ -41,33 +42,17 @@ GET {{baseUrl}}/questions?
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
-{
-    "title": "nova pergunta",
-    "content": "conteúdo da perguntaa"
-}
-
 ###
 
 # @name get_question_by_slug
-GET {{baseUrl}}/questions/nova-perguntas-1
+GET {{baseUrl}}/questions/novas-perguntas-3
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ### 
 
 # @name answer_question
-POST {{baseUrl}}/questions/nova-perguntas-1/answer
-Content-Type: application/json
-Authorization: Bearer {{authToken}}
-
-{
-    "content": "conteúdo de criação da resposta"
-}
-
-### 
-
-# @name edit_answer
-POST {{baseUrl}}/questions/nova-perguntas-1/answer
+POST {{baseUrl}}/questions/{{questionId}}/answer
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
