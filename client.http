@@ -30,7 +30,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "title": "novas perguntas 2",
+    "title": "novas perguntas 3",
     "content": "conteúdo da pergunta 2"
 }
 
@@ -52,3 +52,25 @@ Authorization: Bearer {{authToken}}
 GET {{baseUrl}}/questions/nova-perguntas-1
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+### 
+
+# @name answer_question
+POST {{baseUrl}}/questions/nova-perguntas-1/answer
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "content": "conteúdo de criação da resposta"
+}
+
+### 
+
+# @name edit_answer
+POST {{baseUrl}}/questions/nova-perguntas-1/answer
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "content": "conteúdo de criação da resposta"
+}
