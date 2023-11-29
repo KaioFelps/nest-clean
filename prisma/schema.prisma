@@ -23,7 +23,7 @@ model User {
   role     UserRole @default(STUDENT)
 
   questions Question[]
-  answer    Answer[]
+  answers   Answer[]
   comments  Comment[]
 
   @@map("users")
@@ -37,13 +37,13 @@ model Question {
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  authorId     String   @map("author_id")
-  bestAnswerId String?  @unique @map("best_answer_id")
-  answers      Answer[]
+  authorId     String  @map("author_id")
+  bestAnswerId String? @unique @map("best_answer_id")
 
   author     User    @relation(fields: [authorId], references: [id])
   bestAnswer Answer? @relation("bestAnswer", fields: [bestAnswerId], references: [id])
 
+  answers     Answer[]
   comments    Comment[]
   attachments Attachment[]
 
@@ -51,10 +51,10 @@ model Question {
 }
 
 model Answer {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   content   String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
 
   authorId   String @map("author_id")
   questionId String @map("question_id")
@@ -67,11 +67,6 @@ model Answer {
   attachments Attachment[]
 
   @@map("answers")
-}
-
-enum CommentType {
-  QUESTION
-  ANSWER
 }
 
 model Comment {
