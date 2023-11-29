@@ -4,13 +4,16 @@ import { Prisma, Answer as PrismaAnswer } from "@prisma/client";
 
 export class PrismaAnswerMapper {
   static toDomain(prismaAnswer: PrismaAnswer): Answer {
-    const domainAnswer = Answer.create({
-      authorId: new UniqueEntityId(prismaAnswer.authorId),
-      questionId: new UniqueEntityId(prismaAnswer.questionId),
-      content: prismaAnswer.content,
-      createdAt: prismaAnswer.createdAt,
-      updatedAt: prismaAnswer.updatedAt,
-    });
+    const domainAnswer = Answer.create(
+      {
+        authorId: new UniqueEntityId(prismaAnswer.authorId),
+        questionId: new UniqueEntityId(prismaAnswer.questionId),
+        content: prismaAnswer.content,
+        createdAt: prismaAnswer.createdAt,
+        updatedAt: prismaAnswer.updatedAt,
+      },
+      new UniqueEntityId(prismaAnswer.id),
+    );
 
     return domainAnswer;
   }

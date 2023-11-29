@@ -10,10 +10,13 @@ export class PrismaQuestionAttachmentMapper {
       throw new Error("Invalid attachment type.");
     }
 
-    const domainQuestionAttachment = QuestionAttachment.create({
-      attachmentId: new UniqueEntityId(prismaQuestionAttachment.id),
-      questionId: new UniqueEntityId(prismaQuestionAttachment.questionId),
-    });
+    const domainQuestionAttachment = QuestionAttachment.create(
+      {
+        attachmentId: new UniqueEntityId(prismaQuestionAttachment.id),
+        questionId: new UniqueEntityId(prismaQuestionAttachment.questionId),
+      },
+      new UniqueEntityId(prismaQuestionAttachment.id),
+    );
 
     return domainQuestionAttachment;
   }

@@ -10,13 +10,16 @@ export class PrismaQuestionCommentMapper {
       throw new Error("Invalid comment type.");
     }
 
-    const domainQuestionComment = QuestionComment.create({
-      authorId: new UniqueEntityId(prismaQuestionComment.authorId),
-      content: prismaQuestionComment.content,
-      createdAt: prismaQuestionComment.createdAt,
-      updatedAt: prismaQuestionComment.updatedAt,
-      questionId: new UniqueEntityId(prismaQuestionComment.questionId),
-    });
+    const domainQuestionComment = QuestionComment.create(
+      {
+        authorId: new UniqueEntityId(prismaQuestionComment.authorId),
+        content: prismaQuestionComment.content,
+        createdAt: prismaQuestionComment.createdAt,
+        updatedAt: prismaQuestionComment.updatedAt,
+        questionId: new UniqueEntityId(prismaQuestionComment.questionId),
+      },
+      new UniqueEntityId(prismaQuestionComment.id),
+    );
 
     return domainQuestionComment;
   }
