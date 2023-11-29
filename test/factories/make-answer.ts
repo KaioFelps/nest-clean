@@ -23,7 +23,7 @@ export class MakeAnswerFactory {
     return answer;
   }
 
-  async createAndPersist(data: Partial<IAnswer> = {}): Promise<IAnswer> {
+  async createAndPersist(data: Partial<IAnswer> = {}): Promise<Answer> {
     const answer = MakeAnswerFactory.execute(data);
 
     await this.prisma.answer.create({

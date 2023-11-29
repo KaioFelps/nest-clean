@@ -7,6 +7,7 @@ import { AnswerAttachmentList } from "../../enterprise/entities/answer-attachmen
 import { IAnswerAttachmentRepository } from "../repositories/answer-attachment-repository";
 import { AnswerAttachment } from "../../enterprise/entities/answer-attachment";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
+import { Injectable } from "@nestjs/common";
 
 interface IEditAnswerService {
   authorId: string;
@@ -20,6 +21,7 @@ type IEditAnswerResponse = Either<
   { answer: Answer }
 >;
 
+@Injectable()
 export class EditAnswerService {
   constructor(
     private answerRepository: IAnswerRepository,
@@ -41,6 +43,7 @@ export class EditAnswerService {
     if (authorId !== answer.authorId.toString()) {
       return left(new NotAllowedError());
     }
+
     const currentAnswerAttachments =
       await this.answerAttachmentRepository.findManyByAnswerId(answerId);
 
