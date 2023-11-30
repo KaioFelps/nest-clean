@@ -31,13 +31,13 @@ export class MakeQuestionCommentFactory {
 
   async createAndPersist(
     data: Partial<IQuestionComment> = {},
-  ): Promise<IQuestionComment> {
-    const questioncomment = MakeQuestionCommentFactory.execute(data);
+  ): Promise<QuestionComment> {
+    const questionComment = MakeQuestionCommentFactory.execute(data);
 
     await this.prisma.comment.create({
-      data: PrismaQuestionCommentMapper.toPrisma(questioncomment),
+      data: PrismaQuestionCommentMapper.toPrisma(questionComment),
     });
 
-    return questioncomment;
+    return questionComment;
   }
 }
