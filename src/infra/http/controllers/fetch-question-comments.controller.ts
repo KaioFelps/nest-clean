@@ -28,7 +28,7 @@ const questionIdParamValidationPipe = new ZodValidationPipe(
   questionIdParamSchema,
 );
 
-@Controller("/comments/:questionId/")
+@Controller("/questions/comments/:questionId/")
 export class FetchQuestionCommentsController {
   constructor(
     private fetchQuestionCommentsService: FetchQuestionCommentService,

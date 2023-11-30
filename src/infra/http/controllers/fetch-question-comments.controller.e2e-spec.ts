@@ -4,52 +4,57 @@ import { INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
-import { MakeAnswerFactory } from "test/factories/make-answer";
 import { MakeQuestionFactory } from "test/factories/make-question";
+import { MakeQuestionCommentFactory } from "test/factories/make-question-comment";
 import { MakeStudentFactory } from "test/factories/make-student";
 
-describe("Fetch questions answers (E2E)", () => {
+describe("Fetch question comments (E2E)", () => {
   let app: INestApplication;
   let jwt: JwtService;
   let studentFactory: MakeStudentFactory;
   let questionFactory: MakeQuestionFactory;
-  let answerFactory: MakeAnswerFactory;
+  let commentFactory: MakeQuestionCommentFactory;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [MakeStudentFactory, MakeQuestionFactory, MakeAnswerFactory],
+      providers: [
+        MakeStudentFactory,
+        MakeQuestionFactory,
+        MakeQuestionCommentFactory,
+      ],
     }).compile();
 
     app = moduleRef.createNestApplication();
     jwt = moduleRef.get(JwtService);
     studentFactory = moduleRef.get(MakeStudentFactory);
     questionFactory = moduleRef.get(MakeQuestionFactory);
-    answerFactory = moduleRef.get(MakeAnswerFactory);
+    commentFactory = moduleRef.get(MakeQuestionCommentFactory);
 
     await app.init();
   });
 
-  test("[GET] /answers/:questionId/", async () => {
+  test("[GET] /questions/comments/:questionId/", async () => {
     const user = await studentFactory.createAndPersist();
+
     const question = await questionFactory.createAndPersist({
       authorId: user.id,
     });
 
     await Promise.all([
-      answerFactory.createAndPersist({
+      commentFactory.createAndPersist({
         authorId: user.id,
         questionId: question.id,
         content: "boa pergunta",
       }),
 
-      answerFactory.createAndPersist({
+      commentFactory.createAndPersist({
         authorId: user.id,
         questionId: question.id,
         content: "estou tendo o mesmo problema",
       }),
 
-      answerFactory.createAndPersist({
+      commentFactory.createAndPersist({
         authorId: user.id,
         questionId: question.id,
         content: "bem feito",
@@ -59,12 +64,12 @@ describe("Fetch questions answers (E2E)", () => {
     const accessToken = await jwt.signAsync({ sub: user.id.toString() });
 
     const response = await request(app.getHttpServer())
-      .get(`/answers/${question.id.toString()}`)
+      .get(`/questions/comments/${question.id.toString()}`)
       .set({ Authorization: `Bearer ${accessToken}` });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.answers.length).toBe(3);
-    expect(response.body.answers).toEqual(
+    expect(response.body.comments.length).toBe(3);
+    expect(response.body.comments).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           content: "boa pergunta",
