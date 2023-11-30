@@ -9,7 +9,7 @@ import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { userTokenPayload } from "@/infra/auth/jwt.strategy";
 import { DeleteQuestionCommentService } from "@/domain/forum/application/services/delete-question-comment";
 
-@Controller("/question/comments/delete/:id")
+@Controller("/questions/comments/delete/:id")
 export class DeleteQuestionCommentController {
   constructor(
     private deleteQuestionCommentService: DeleteQuestionCommentService,

@@ -51,7 +51,7 @@ describe("Delete question comment (E2E)", () => {
     });
 
     const response = await request(app.getHttpServer())
-      .delete(`/question/comments/delete/${comment.id.toString()}`)
+      .delete(`/questions/comments/delete/${comment.id.toString()}`)
       .set({ Authorization: `Bearer ${accessToken}` })
       .send();
 
