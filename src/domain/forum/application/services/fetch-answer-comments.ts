@@ -1,6 +1,7 @@
 import { Either, right } from "@/core/either";
 import { AnswerComment } from "../../enterprise/entities/answer-comment";
 import { IAnswerCommentRepository } from "../repositories/answer-comment-repository";
+import { Injectable } from "@nestjs/common";
 
 interface IFetchAnswerCommentService {
   page: number;
@@ -12,6 +13,7 @@ type IFetchAnswerCommentResponse = Either<
   { answerComments: AnswerComment[] }
 >;
 
+@Injectable()
 export class FetchAnswerCommentService {
   constructor(private answerCommentRepository: IAnswerCommentRepository) {}
 
