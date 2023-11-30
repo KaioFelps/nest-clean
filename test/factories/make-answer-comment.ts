@@ -28,7 +28,7 @@ export class MakeAnswerCommentFactory {
 
   async createAndPersist(
     data: Partial<IAnswerComment> = {},
-  ): Promise<IAnswerComment> {
+  ): Promise<AnswerComment> {
     const answercomment = MakeAnswerCommentFactory.execute(data);
 
     await this.prisma.comment.create({
