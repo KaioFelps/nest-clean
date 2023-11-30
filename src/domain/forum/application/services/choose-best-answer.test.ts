@@ -30,8 +30,8 @@ describe("Choose best answer service", () => {
     );
 
     sut = new ChooseBestAnswerService(
-      inMemoryQuestionRepository,
       inMemoryAnswerRepository,
+      inMemoryQuestionRepository,
     );
   });
 
