@@ -2,6 +2,7 @@ import { Either, left, right } from "@/core/either";
 import { IAnswerRepository } from "../repositories/answer-repository";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { NotAllowedError } from "./errors/not-allowed-error";
+import { Injectable } from "@nestjs/common";
 
 interface IDeleteAnswerService {
   authorId: string;
@@ -13,6 +14,7 @@ type IDeleteAnswerResponse = Either<
   null
 >;
 
+@Injectable()
 export class DeleteAnswerService {
   constructor(private answerRepository: IAnswerRepository) {}
 
