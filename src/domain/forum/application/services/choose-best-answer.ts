@@ -4,6 +4,7 @@ import { IAnswerRepository } from "../repositories/answer-repository";
 import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "./errors/resource-not-found-error";
 import { NotAllowedError } from "./errors/not-allowed-error";
+import { Injectable } from "@nestjs/common";
 
 interface IChooseBestAnswerService {
   answerId: string;
@@ -15,10 +16,11 @@ type IChooseBestAnswerResponse = Either<
   { question: Question }
 >;
 
+@Injectable()
 export class ChooseBestAnswerService {
   constructor(
-    private questionRepository: IQuestionRepository,
     private answerRepository: IAnswerRepository,
+    private questionRepository: IQuestionRepository,
   ) {}
 
   async execute({
