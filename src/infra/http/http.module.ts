@@ -21,6 +21,8 @@ import { EditAnswerController } from "./controllers/edit-answer.controller";
 import { EditAnswerService } from "@/domain/forum/application/services/edit-answer";
 import { DeleteAnswerService } from "@/domain/forum/application/services/delete-answer";
 import { DeleteAnswerController } from "./controllers/delete-answer.controller";
+import { FetchQuestionAnswersController } from "./controllers/fetch-question-answers.controller";
+import { FetchQuestionAnswersService } from "@/domain/forum/application/services/fetch-question-answers";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -35,6 +37,7 @@ import { DeleteAnswerController } from "./controllers/delete-answer.controller";
     AnswerQuestionController,
     EditAnswerController,
     DeleteAnswerController,
+    FetchQuestionAnswersController,
   ],
   providers: [
     CreateQuestionService,
@@ -47,6 +50,7 @@ import { DeleteAnswerController } from "./controllers/delete-answer.controller";
     AnswerQuestionService,
     EditAnswerService,
     DeleteAnswerService,
+    FetchQuestionAnswersService,
   ],
 })
 export class HttpModule {}
