@@ -1,4 +1,7 @@
+import { InvalidAttachmentType } from "@/domain/forum/application/services/errors/invalid-attachment-type";
+import { UploadAndCreateAttachmentService } from "@/domain/forum/application/services/upload-and-create-attachment";
 import {
+  BadRequestException,
   Controller,
   FileTypeValidator,
   MaxFileSizeValidator,
@@ -11,7 +14,9 @@ import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller("/attachments")
 export class UploadAttachmentController {
-  //   constructor() {}
+  constructor(
+    private uploadAndCreateAttachment: UploadAndCreateAttachmentService,
+  ) {}
 
   @Post()
   @UseInterceptors(FileInterceptor("file")) // file é o nome do arquivo que enviaremos
@@ -27,6 +32,24 @@ export class UploadAttachmentController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
+    const result = await this.uploadAndCreateAttachment.execute({
+      fileName: file.originalname,
+      fileType: file.mimetype,
+      body: file.buffer,
+    });
+
+    if (result.isLeft()) {
+      const error = result.value;
+
+      switch (error.constructor) {
+        case InvalidAttachmentType:
+          throw new BadRequestException(error.message);
+        default:
+          throw new BadRequestException(error.message);
+      }
+    }
+
+    const { attachment } = result.value;
+    return { attachmentId: attachment.id.toString() };
   }
 }

@@ -26,16 +26,23 @@ describe("Post attachment (E2E)", () => {
     await app.init();
   });
 
-  test("[POST] /attachments", async () => {
-    const user = await studentFactory.createAndPersist();
+  test(
+    "[POST] /attachments",
+    async () => {
+      const user = await studentFactory.createAndPersist();
 
-    const accessToken = await jwt.signAsync({ sub: user.id.toString() });
+      const accessToken = await jwt.signAsync({ sub: user.id.toString() });
 
-    const response = await request(app.getHttpServer())
-      .post("/attachments")
-      .set({ Authorization: `Bearer ${accessToken}` })
-      .attach("file", "./test/e2e/sample-upload.png");
+      const response = await request(app.getHttpServer())
+        .post("/attachments")
+        .set({ Authorization: `Bearer ${accessToken}` })
+        .attach("file", "./test/e2e/sample-upload.png");
 
-    expect(response.statusCode).toBe(201);
-  });
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toEqual({
+        attachmentId: expect.any(String),
+      });
+    },
+    { timeout: 10000 },
+  );
 });
