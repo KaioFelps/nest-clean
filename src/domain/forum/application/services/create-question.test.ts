@@ -27,13 +27,29 @@ describe("Create question service", () => {
     });
 
     expect(response.isRight()).toBe(true);
+
     expect(inMemoryRepository.items[0].id).toEqual(response.value?.question.id);
+
     expect(inMemoryRepository.items[0].attachments.currentItems).toHaveLength(
       2,
     );
+
     expect(inMemoryRepository.items[0].attachments.getItems()).toEqual([
       expect.objectContaining({ attachmentId: new UniqueEntityId("1") }),
       expect.objectContaining({ attachmentId: new UniqueEntityId("2") }),
     ]);
+  });
+
+  test("if on question creation it will create and persist the question's attachments", async () => {
+    const response = await sut.execute({
+      authorId: "1",
+      content: "Sample question content here",
+      title: "Sample question title",
+      attachmentsIds: ["1", "2"],
+    });
+
+    expect(response.isRight()).toBe(true);
+
+    expect(inMemoryQuestionAttachmentRepository.items.length).toBe(2);
   });
 });

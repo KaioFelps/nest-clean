@@ -14,7 +14,7 @@ interface IEditQuestionService {
   questionId: string;
   title: string;
   content: string;
-  attachmentIds: string[];
+  attachmentsIds: string[];
 }
 
 type IEditQuestionResponse = Either<
@@ -34,7 +34,7 @@ export class EditQuestionService {
     questionId,
     content,
     title,
-    attachmentIds,
+    attachmentsIds,
   }: IEditQuestionService): Promise<IEditQuestionResponse> {
     const question = await this.questionRepository.findById(questionId);
 
@@ -53,14 +53,17 @@ export class EditQuestionService {
       currentQuestionAttachments,
     );
 
-    const newQuestionAttachments = attachmentIds.map((attachmentId) =>
-      QuestionAttachment.create({
+    const newQuestionAttachments = attachmentsIds.map((attachmentId) => {
+      return QuestionAttachment.create({
         attachmentId: new UniqueEntityId(attachmentId),
         questionId: question.id,
-      }),
-    );
+      });
+    });
 
     questionAttachmentList.update(newQuestionAttachments);
+
+    console.log(currentQuestionAttachments[0]);
+    console.log(currentQuestionAttachments[1]);
 
     question.title = title;
     question.content = content;

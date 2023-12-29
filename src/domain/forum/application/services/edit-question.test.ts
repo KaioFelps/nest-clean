@@ -14,11 +14,14 @@ describe("Edit question service", () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
+
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
     );
+
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
+
     sut = new EditQuestionService(
       inMemoryQuestionRepository,
       inMemoryQuestionAttachmentRepository,
@@ -49,7 +52,7 @@ describe("Edit question service", () => {
       questionId: newQuestion.id.toString(),
       title: "Pergunta teste",
       content: "Conteúdo teste",
-      attachmentIds: ["1", "3"],
+      attachmentsIds: ["1", "3"],
     });
 
     expect(inMemoryQuestionRepository.items[0]).toMatchObject({
@@ -78,10 +81,53 @@ describe("Edit question service", () => {
       questionId: newQuestion.id.toString(),
       title: "Pergunta teste",
       content: "Conteúdo teste",
-      attachmentIds: [],
+      attachmentsIds: [],
     });
 
     expect(response.isLeft()).toBe(true);
     expect(response.value).toBeInstanceOf(NotAllowedError);
+  });
+
+  test("if it updates and persists attachments changes on question edit", async () => {
+    const newQuestion = MakeQuestionFactory.execute(
+      {
+        authorId: new UniqueEntityId("author-1"),
+      },
+      new UniqueEntityId("question-1"),
+    );
+
+    await inMemoryQuestionRepository.create(newQuestion);
+
+    inMemoryQuestionAttachmentRepository.items.push(
+      MakeQuestionAttachmentFactory.execute({
+        questionId: newQuestion.id,
+        attachmentId: new UniqueEntityId("1"),
+      }),
+      MakeQuestionAttachmentFactory.execute({
+        questionId: newQuestion.id,
+        attachmentId: new UniqueEntityId("2"),
+      }),
+    );
+
+    const result = await sut.execute({
+      questionId: newQuestion.id.toValue(),
+      authorId: "author-1",
+      title: "Pergunta teste",
+      content: "Conteúdo teste",
+      attachmentsIds: ["1", "3"],
+    });
+
+    expect(result.isRight()).toBe(true);
+    expect(inMemoryQuestionAttachmentRepository.items).toHaveLength(2);
+    expect(inMemoryQuestionAttachmentRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId("1"),
+        }),
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId("3"),
+        }),
+      ]),
+    );
   });
 });
