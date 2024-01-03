@@ -5,9 +5,10 @@ import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { NotAllowedError } from "./errors/not-allowed-error";
 import { InMemoryQuestionAttachmentRepository } from "test/repositories/in-memory-question-attachment-repository";
 import { MakeQuestionAttachmentFactory } from "test/factories/make-question-attachment";
+import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
 
-let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
+let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let sut: EditQuestionService;
 
 describe("Edit question service", () => {
@@ -18,9 +19,6 @@ describe("Edit question service", () => {
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
     );
-
-    inMemoryQuestionAttachmentRepository =
-      new InMemoryQuestionAttachmentRepository();
 
     sut = new EditQuestionService(
       inMemoryQuestionRepository,
@@ -96,9 +94,7 @@ describe("Edit question service", () => {
       new UniqueEntityId("question-1"),
     );
 
-    await inMemoryQuestionRepository.create(newQuestion);
-
-    inMemoryQuestionAttachmentRepository.items.push(
+    const newQuestionAttachments = [
       MakeQuestionAttachmentFactory.execute({
         questionId: newQuestion.id,
         attachmentId: new UniqueEntityId("1"),
@@ -107,7 +103,13 @@ describe("Edit question service", () => {
         questionId: newQuestion.id,
         attachmentId: new UniqueEntityId("2"),
       }),
+    ];
+
+    newQuestion.attachments = new QuestionAttachmentList(
+      newQuestionAttachments,
     );
+
+    await inMemoryQuestionRepository.create(newQuestion);
 
     const result = await sut.execute({
       questionId: newQuestion.id.toValue(),

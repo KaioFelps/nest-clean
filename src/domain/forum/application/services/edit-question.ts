@@ -61,10 +61,6 @@ export class EditQuestionService {
     });
 
     questionAttachmentList.update(newQuestionAttachments);
-
-    console.log(currentQuestionAttachments[0]);
-    console.log(currentQuestionAttachments[1]);
-
     question.title = title;
     question.content = content;
     question.attachments = questionAttachmentList;
