@@ -39,7 +39,7 @@ export class EditQuestionController {
     const userId = user.sub;
 
     const result = await this.editQuestionService.execute({
-      attachmentIds: [],
+      attachmentsIds: [],
       authorId: userId,
       content,
       questionId,
