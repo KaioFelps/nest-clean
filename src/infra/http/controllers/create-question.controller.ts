@@ -8,6 +8,7 @@ import { CreateQuestionService } from "@/domain/forum/application/services/creat
 const createQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
+  attachments: z.array(z.string().uuid()),
 });
 
 type CreateQuestionBody = z.infer<typeof createQuestionBodySchema>;
@@ -24,13 +25,13 @@ export class CreateQuestionController {
     @Body(bodyValidationPipe) body: CreateQuestionBody,
     @CurrentUser() user: userTokenPayload,
   ) {
-    const { title, content } = body;
+    const { title, content, attachments } = body;
 
     const result = await this.createQuestionService.execute({
       title,
       content,
       authorId: user.sub,
-      attachmentsIds: [],
+      attachmentsIds: attachments,
     });
 
     if (result.isLeft()) {

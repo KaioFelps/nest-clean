@@ -1,6 +1,6 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { QuestionAttachment } from "@/domain/forum/enterprise/entities/question-attachment";
-import { Attachment as PrismaQuestionAttachment } from "@prisma/client";
+import { Prisma, Attachment as PrismaQuestionAttachment } from "@prisma/client";
 
 export class PrismaQuestionAttachmentMapper {
   static toDomain(
@@ -19,5 +19,44 @@ export class PrismaQuestionAttachmentMapper {
     );
 
     return domainQuestionAttachment;
+  }
+
+  static toPrismaUpdateMany(
+    domainQuestionAttachments: QuestionAttachment[],
+  ): Prisma.AttachmentUpdateManyArgs {
+    const attachmentIds: string[] = [];
+
+    for (const attachment of domainQuestionAttachments) {
+      attachmentIds.push(attachment.attachmentId.toString());
+    }
+
+    return {
+      where: {
+        id: {
+          in: attachmentIds,
+        },
+      },
+      data: {
+        questionId: domainQuestionAttachments[0].questionId.toString(),
+      },
+    };
+  }
+
+  static toPrismaDeleteMany(
+    domainQuestionAttachments: QuestionAttachment[],
+  ): Prisma.AttachmentDeleteManyArgs {
+    const attachmentIds: string[] = [];
+
+    for (const attachment of domainQuestionAttachments) {
+      attachmentIds.push(attachment.attachmentId.toString());
+    }
+
+    return {
+      where: {
+        id: {
+          in: attachmentIds,
+        },
+      },
+    };
   }
 }
