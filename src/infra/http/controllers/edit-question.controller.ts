@@ -16,6 +16,7 @@ import { userTokenPayload } from "@/infra/auth/jwt.strategy";
 const editQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
+  attachments: z.string().uuid().array(),
 });
 
 const bodyValidationPipe = new ZodValidationPipe(editQuestionBodySchema);
@@ -33,13 +34,14 @@ export class EditQuestionController {
   @HttpCode(204)
   async handle(
     @Param("id") questionId: string,
-    @Body(bodyValidationPipe) { content, title }: EditQuestionBodySchema,
+    @Body(bodyValidationPipe)
+    { content, title, attachments }: EditQuestionBodySchema,
     @CurrentUser() user: userTokenPayload,
   ) {
     const userId = user.sub;
 
     const result = await this.editQuestionService.execute({
-      attachmentsIds: [],
+      attachmentsIds: attachments,
       authorId: userId,
       content,
       questionId,
