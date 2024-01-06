@@ -44,12 +44,14 @@ describe("Edit answer service", () => {
       }),
     );
 
-    await sut.execute({
+    const result = await sut.execute({
       authorId: newAnswer.authorId.toString(),
       answerId: newAnswer.id.toString(),
       content: "Conteúdo teste",
       attachmentIds: ["1", "2"],
     });
+
+    expect(result.isRight()).toBe(true);
 
     expect(inMemoryAnswerRepository.items[0]).toMatchObject({
       content: "Conteúdo teste",
@@ -73,5 +75,45 @@ describe("Edit answer service", () => {
 
     expect(response.isLeft()).toBe(true);
     expect(response.value).toBeInstanceOf(NotAllowedError);
+  });
+
+  test("if it sync attachments after editing an existing question", async () => {
+    const newAnswer = MakeAnswerFactory.execute(
+      {},
+      new UniqueEntityId("answer-1"),
+    );
+
+    await inMemoryAnswerRepository.create(newAnswer);
+
+    inMemoryAnswerAttachmentRepository.items.push(
+      MakeAnswerAttachmentFactory.execute({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId("1"),
+      }),
+      MakeAnswerAttachmentFactory.execute({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId("2"),
+      }),
+    );
+
+    const result = await sut.execute({
+      authorId: newAnswer.authorId.toString(),
+      answerId: newAnswer.id.toString(),
+      content: "Conteúdo teste",
+      attachmentIds: ["3", "1"],
+    });
+
+    expect(result.isRight()).toBe(true);
+
+    expect(inMemoryAnswerAttachmentRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId("1"),
+        }),
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId("3"),
+        }),
+      ]),
+    );
   });
 });

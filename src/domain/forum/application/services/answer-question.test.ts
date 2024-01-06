@@ -26,13 +26,27 @@ describe("Create answer service", () => {
     });
 
     expect(response.isRight()).toBe(true);
+
     expect(inMemoryAnswerRepository.items[0]).toEqual(response.value?.answer);
+
     expect(
       inMemoryAnswerRepository.items[0].attachments.currentItems,
     ).toHaveLength(2);
+
     expect(inMemoryAnswerRepository.items[0].attachments.getItems()).toEqual([
       expect.objectContaining({ attachmentId: new UniqueEntityId("1") }),
       expect.objectContaining({ attachmentId: new UniqueEntityId("2") }),
     ]);
+
+    expect(inMemoryAnswerAttachmentRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId("1"),
+        }),
+        expect.objectContaining({
+          attachmentId: new UniqueEntityId("2"),
+        }),
+      ]),
+    );
   });
 });

@@ -61,6 +61,7 @@ export class EditAnswerService {
     answerAttachmentList.update(newAnswerAttachments);
 
     answer.content = content;
+    answer.attachments = answerAttachmentList;
 
     await this.answerRepository.save(answer);
 
