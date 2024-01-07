@@ -73,6 +73,7 @@ export class InMemoryQuestionCommentRepository
           commentId: comment.id,
           createdAt: comment.createdAt,
           updatedAt: comment.updatedAt,
+          content: comment.content,
         });
 
         return commentWithAuthor;

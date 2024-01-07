@@ -11,18 +11,22 @@ import {
 } from "../services/send-notification";
 import { InMemoryNotificationRepository } from "test/repositories/in-memory-notification-repository";
 import { MakeQuestionFactory } from "test/factories/make-question";
-import { SpyInstance } from "vitest";
+import { MockInstance } from "vitest";
 import { waitFor } from "test/util/wait-for";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
+import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
 
 let inMemoryAnswerRepository: InMemoryAnswerRepository;
 let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository;
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
 let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let inMemoryNotificationRepository: InMemoryNotificationRepository;
+let inMemoryStudentRepository: InMemoryStudentRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let sendNotificationService: SendNotificationService;
 
 // os generics recebem 2 parâmetros: um array com os parâmetros da função e, em seguida, o tipo da resposta da função
-let sendNotificationExecuteSpy: SpyInstance<
+let sendNotificationExecuteSpy: MockInstance<
   [ISendNotificationService],
   Promise<ISendNotificationResponse>
 >;
@@ -39,8 +43,14 @@ describe("On answer created", () => {
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
 
+    inMemoryStudentRepository = new InMemoryStudentRepository();
+
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentRepository,
+      inMemoryAttachmentRepository,
     );
 
     inMemoryNotificationRepository = new InMemoryNotificationRepository();

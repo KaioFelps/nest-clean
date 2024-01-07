@@ -7,20 +7,24 @@ import {
   ISendNotificationService,
 } from "../services/send-notification";
 import { InMemoryNotificationRepository } from "test/repositories/in-memory-notification-repository";
-import { SpyInstance } from "vitest";
+import { MockInstance } from "vitest";
 import { waitFor } from "test/util/wait-for";
 import { MakeQuestionCommentFactory } from "test/factories/make-question-comment";
 import { InMemoryQuestionCommentRepository } from "test/repositories/in-memory-question-comment-repository";
 import { OnQuestionCommentCreated } from "./on-question-comment-created";
+import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
 let inMemoryQuestionCommentRepository: InMemoryQuestionCommentRepository;
 let inMemoryNotificationRepository: InMemoryNotificationRepository;
+let inMemoryStudentRepository: InMemoryStudentRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let sendNotificationService: SendNotificationService;
 
 // os generics recebem 2 parâmetros: um array com os parâmetros da função e, em seguida, o tipo da resposta da função
-let sendNotificationExecuteSpy: SpyInstance<
+let sendNotificationExecuteSpy: MockInstance<
   [ISendNotificationService],
   Promise<ISendNotificationResponse>
 >;
@@ -29,11 +33,19 @@ describe("On question comment created", () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
+
+    inMemoryStudentRepository = new InMemoryStudentRepository();
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentRepository,
+      inMemoryAttachmentRepository,
     );
 
-    inMemoryQuestionCommentRepository = new InMemoryQuestionCommentRepository();
+    inMemoryQuestionCommentRepository = new InMemoryQuestionCommentRepository(
+      inMemoryStudentRepository,
+    );
 
     inMemoryNotificationRepository = new InMemoryNotificationRepository();
 
