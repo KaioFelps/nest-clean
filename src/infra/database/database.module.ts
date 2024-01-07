@@ -70,7 +70,7 @@ import { INotificationRepository } from "@/domain/notification/application/repos
     IQuestionCommentRepository,
     IQuestionAttachmentRepository,
     IAttachmentRepository,
-    PrismaNotificationsRepository,
+    INotificationRepository,
   ],
 })
 export class DatabaseModule {}
