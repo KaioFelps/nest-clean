@@ -3,12 +3,12 @@ import {
   IQuestionAttachment,
   QuestionAttachment,
 } from "@/domain/forum/enterprise/entities/question-attachment";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
 
 @Injectable()
 export class MakeQuestionAttachmentFactory {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaService) {}
 
   static execute(
     override: Partial<IQuestionAttachment> = {},
@@ -29,7 +29,7 @@ export class MakeQuestionAttachmentFactory {
   async createAndPersist(
     data: Partial<QuestionAttachment> = {},
   ): Promise<QuestionAttachment> {
-    const attachment = MakeQuestionAttachmentFactory.execute(data);
+    const attachment = MakeQuestionAttachmentFactory.execute(data, data.id);
 
     await this.prisma.attachment.update({
       where: {

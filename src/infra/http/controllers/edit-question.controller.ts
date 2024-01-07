@@ -7,7 +7,6 @@ import {
   BadRequestException,
 } from "@nestjs/common";
 import { EditQuestionService } from "@/domain/forum/application/services/edit-question";
-import { IQuestionRepository } from "@/domain/forum/application/repositories/question-repository";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
@@ -25,10 +24,7 @@ type EditQuestionBodySchema = z.infer<typeof editQuestionBodySchema>;
 
 @Controller("/questions/edit/:id")
 export class EditQuestionController {
-  constructor(
-    private questionRepository: IQuestionRepository,
-    private editQuestionService: EditQuestionService,
-  ) {}
+  constructor(private editQuestionService: EditQuestionService) {}
 
   @Put()
   @HttpCode(204)

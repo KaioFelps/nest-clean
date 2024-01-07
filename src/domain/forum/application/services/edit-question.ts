@@ -53,14 +53,19 @@ export class EditQuestionService {
       currentQuestionAttachments,
     );
 
-    const newQuestionAttachments = attachmentsIds.map((attachmentId) => {
-      return QuestionAttachment.create({
-        attachmentId: new UniqueEntityId(attachmentId),
+    const newQuestionAttachments: QuestionAttachment[] = [];
+
+    for (const id of attachmentsIds) {
+      const attachment = QuestionAttachment.create({
+        attachmentId: new UniqueEntityId(id),
         questionId: question.id,
       });
-    });
+
+      newQuestionAttachments.push(attachment);
+    }
 
     questionAttachmentList.update(newQuestionAttachments);
+
     question.title = title;
     question.content = content;
     question.attachments = questionAttachmentList;

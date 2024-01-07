@@ -19,7 +19,7 @@ export class PrismaQuestionAttachmentsRepository
 
     const mappedAttachments: QuestionAttachment[] = [];
 
-    if (mappedAttachments.length > 0) {
+    if (questionAttachments.length > 0) {
       for (let i = 0; i < questionAttachments.length; i++) {
         mappedAttachments.push(
           PrismaQuestionAttachmentMapper.toDomain(questionAttachments[i]),
