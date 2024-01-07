@@ -2,19 +2,30 @@ import { InMemoryQuestionRepository } from "test/repositories/in-memory-question
 import { CreateQuestionService } from "./create-question";
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { InMemoryQuestionAttachmentRepository } from "test/repositories/in-memory-question-attachment-repository";
+import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
-
 let inMemoryRepository: InMemoryQuestionRepository;
+let inMemoryStudentRepository: InMemoryStudentRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let sut: CreateQuestionService;
 
 describe("Create question service", () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
+
+    inMemoryStudentRepository = new InMemoryStudentRepository();
+
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+
     inMemoryRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentRepository,
+      inMemoryAttachmentRepository,
     );
+
     sut = new CreateQuestionService(inMemoryRepository);
   });
 

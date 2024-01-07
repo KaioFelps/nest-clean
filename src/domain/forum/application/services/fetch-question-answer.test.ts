@@ -5,11 +5,15 @@ import { FetchQuestionAnswersService } from "./fetch-question-answers";
 import { MakeAnswerFactory } from "test/factories/make-answer";
 import { InMemoryQuestionAttachmentRepository } from "test/repositories/in-memory-question-attachment-repository";
 import { InMemoryAnswerAttachmentRepository } from "test/repositories/in-memory-answer-attachment-repository";
+import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository;
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
 let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let inMemoryAnswerRepository: InMemoryAnswerRepository;
+let inMemoryStudentRepository: InMemoryStudentRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let sut: FetchQuestionAnswersService;
 
 describe("Fetch question's answers service", () => {
@@ -22,6 +26,8 @@ describe("Fetch question's answers service", () => {
 
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentRepository,
+      inMemoryAttachmentRepository,
     );
 
     inMemoryAnswerRepository = new InMemoryAnswerRepository(

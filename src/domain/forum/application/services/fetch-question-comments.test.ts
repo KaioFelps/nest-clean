@@ -7,11 +7,13 @@ import { InMemoryQuestionRepository } from "test/repositories/in-memory-question
 import { InMemoryQuestionAttachmentRepository } from "test/repositories/in-memory-question-attachment-repository";
 import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
 import { MakeStudentFactory } from "test/factories/make-student";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
 let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let inMemoryQuestionCommentRepository: InMemoryQuestionCommentRepository;
 let inMemoryStudentRepository: InMemoryStudentRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let sut: FetchQuestionCommentService;
 
 describe("Fetch question's comment service", () => {
@@ -19,11 +21,15 @@ describe("Fetch question's comment service", () => {
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
 
+    inMemoryStudentRepository = new InMemoryStudentRepository();
+
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentRepository,
+      inMemoryAttachmentRepository,
     );
-
-    inMemoryStudentRepository = new InMemoryStudentRepository();
 
     inMemoryQuestionCommentRepository = new InMemoryQuestionCommentRepository(
       inMemoryStudentRepository,

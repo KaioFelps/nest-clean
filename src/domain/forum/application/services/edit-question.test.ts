@@ -6,8 +6,12 @@ import { NotAllowedError } from "./errors/not-allowed-error";
 import { InMemoryQuestionAttachmentRepository } from "test/repositories/in-memory-question-attachment-repository";
 import { MakeQuestionAttachmentFactory } from "test/factories/make-question-attachment";
 import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
+import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
+let inMemoryStudentRepository: InMemoryStudentRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let inMemoryQuestionRepository: InMemoryQuestionRepository;
 let sut: EditQuestionService;
 
@@ -16,8 +20,14 @@ describe("Edit question service", () => {
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
 
+    inMemoryStudentRepository = new InMemoryStudentRepository();
+
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentRepository,
+      inMemoryAttachmentRepository,
     );
 
     sut = new EditQuestionService(

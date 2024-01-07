@@ -2,9 +2,14 @@ import { InMemoryQuestionRepository } from "test/repositories/in-memory-question
 import { FetchLatestQuestionsService } from "./fetch-latest-questions";
 import { MakeQuestionFactory } from "test/factories/make-question";
 import { InMemoryQuestionAttachmentRepository } from "test/repositories/in-memory-question-attachment-repository";
+import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let inMemoryQuestionAttachmentRepository: InMemoryQuestionAttachmentRepository;
 let inMemoryQuestionRepository: InMemoryQuestionRepository;
+let inMemoryStudentRepository: InMemoryStudentRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
+
 let sut: FetchLatestQuestionsService;
 
 describe("Fetch latest questions service", () => {
@@ -12,8 +17,14 @@ describe("Fetch latest questions service", () => {
     inMemoryQuestionAttachmentRepository =
       new InMemoryQuestionAttachmentRepository();
 
+    inMemoryStudentRepository = new InMemoryStudentRepository();
+
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+
     inMemoryQuestionRepository = new InMemoryQuestionRepository(
       inMemoryQuestionAttachmentRepository,
+      inMemoryStudentRepository,
+      inMemoryAttachmentRepository,
     );
 
     sut = new FetchLatestQuestionsService(inMemoryQuestionRepository);

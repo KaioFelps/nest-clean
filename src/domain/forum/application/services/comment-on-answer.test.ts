@@ -3,10 +3,12 @@ import { CommentOnAnswerService } from "./comment-on-answer";
 import { MakeAnswerFactory } from "test/factories/make-answer";
 import { InMemoryAnswerCommentRepository } from "test/repositories/in-memory-answer-comment-repository";
 import { InMemoryAnswerAttachmentRepository } from "test/repositories/in-memory-answer-attachment-repository";
+import { InMemoryStudentRepository } from "test/repositories/in-memory-student-repository";
 
 let inMemoryAnswerAttachmentRepository: InMemoryAnswerAttachmentRepository;
 let inMemoryAnswerRepository: InMemoryAnswerRepository;
 let inMemoryAnswerCommentRepository: InMemoryAnswerCommentRepository;
+let inMemoryStudentRepository: InMemoryStudentRepository;
 let sut: CommentOnAnswerService;
 
 describe("Comment on answer service", () => {
@@ -18,7 +20,11 @@ describe("Comment on answer service", () => {
       inMemoryAnswerAttachmentRepository,
     );
 
-    inMemoryAnswerCommentRepository = new InMemoryAnswerCommentRepository();
+    inMemoryStudentRepository = new InMemoryStudentRepository();
+
+    inMemoryAnswerCommentRepository = new InMemoryAnswerCommentRepository(
+      inMemoryStudentRepository,
+    );
 
     sut = new CommentOnAnswerService(
       inMemoryAnswerRepository,
