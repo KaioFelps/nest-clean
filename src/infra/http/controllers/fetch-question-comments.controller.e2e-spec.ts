@@ -35,7 +35,9 @@ describe("Fetch question comments (E2E)", () => {
   });
 
   test("[GET] /questions/comments/:questionId/", async () => {
-    const user = await studentFactory.createAndPersist();
+    const user = await studentFactory.createAndPersist({
+      name: "John Doe",
+    });
 
     const question = await questionFactory.createAndPersist({
       authorId: user.id,
@@ -68,17 +70,22 @@ describe("Fetch question comments (E2E)", () => {
       .set({ Authorization: `Bearer ${accessToken}` });
 
     expect(response.statusCode).toBe(200);
+
     expect(response.body.comments.length).toBe(3);
+
     expect(response.body.comments).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           content: "boa pergunta",
+          authorName: "John Doe",
         }),
         expect.objectContaining({
           content: "estou tendo o mesmo problema",
+          authorName: "John Doe",
         }),
         expect.objectContaining({
           content: "bem feito",
+          authorName: "John Doe",
         }),
       ]),
     );
