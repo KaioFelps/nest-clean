@@ -17,6 +17,7 @@ import { IQuestionCommentRepository } from "@/domain/forum/application/repositor
 import { IQuestionAttachmentRepository } from "@/domain/forum/application/repositories/question-attachment-repository";
 import { IAttachmentRepository } from "@/domain/forum/application/repositories/attachment-repository";
 import { PrismaAttachmentsRepository } from "./prisma/repositories/prisma-attachments-repository";
+import { INotificationRepository } from "@/domain/notification/application/repositories/notification-repository";
 
 @Module({
   providers: [
@@ -53,7 +54,10 @@ import { PrismaAttachmentsRepository } from "./prisma/repositories/prisma-attach
       provide: IAttachmentRepository,
       useClass: PrismaAttachmentsRepository,
     },
-    PrismaNotificationsRepository,
+    {
+      provide: INotificationRepository,
+      useClass: PrismaNotificationsRepository,
+    },
   ],
   // quando se usa o exports, todo módulo que importar este módulo terá acesso ao que este módulo está exportando
   exports: [
