@@ -7,12 +7,16 @@ import {
   HttpStatus,
   Param,
 } from "@nestjs/common";
-import { QuestionPresenter } from "../presenters/question-presenter";
 import { ResourceNotFoundError } from "@/domain/forum/application/services/errors/resource-not-found-error";
+import { QuestionWithDetailsPresenter } from "../presenters/question-with-details-presenter";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
 
 @Controller("/questions/:slug")
 export class GetQuestionBySlugController {
-  constructor(private getQuestionBySlug: GetQuestionBySlugService) {}
+  constructor(
+    private getQuestionBySlug: GetQuestionBySlugService,
+    private prisma: PrismaService,
+  ) {}
 
   @Get()
   async handle(@Param("slug") slug: string) {
@@ -30,7 +34,7 @@ export class GetQuestionBySlugController {
     }
 
     return {
-      question: QuestionPresenter.toHTTP(result.value.question),
+      question: QuestionWithDetailsPresenter.toHTTP(result.value.question),
     };
   }
 }
