@@ -35,4 +35,26 @@ export class PrismaAnswerAttachmentsRepository
       },
     });
   }
+
+  async createMany(answerAttachments: AnswerAttachment[]): Promise<void> {
+    if (answerAttachments.length < 1) {
+      return;
+    }
+
+    const data =
+      PrismaAnswerAttachmentMapper.toPrismaUpdateMany(answerAttachments);
+
+    await this.prisma.attachment.updateMany(data);
+  }
+
+  async deleteMany(answerAttachments: AnswerAttachment[]): Promise<void> {
+    if (answerAttachments.length < 1) {
+      return;
+    }
+
+    const data =
+      PrismaAnswerAttachmentMapper.toPrismaDeleteMany(answerAttachments);
+
+    await this.prisma.attachment.deleteMany(data);
+  }
 }

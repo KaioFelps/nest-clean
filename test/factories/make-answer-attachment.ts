@@ -3,8 +3,13 @@ import {
   IAnswerAttachment,
   AnswerAttachment,
 } from "@/domain/forum/enterprise/entities/answer-attachment";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class MakeAnswerAttachmentFactory {
+  constructor(private prisma: PrismaService) {}
+
   static execute(
     override: Partial<IAnswerAttachment> = {},
     id?: UniqueEntityId,
@@ -19,5 +24,22 @@ export class MakeAnswerAttachmentFactory {
     );
 
     return answerattachment;
+  }
+
+  async createAndPersist(
+    data: Partial<AnswerAttachment> = {},
+  ): Promise<AnswerAttachment> {
+    const attachment = MakeAnswerAttachmentFactory.execute(data, data.id);
+
+    await this.prisma.attachment.update({
+      where: {
+        id: attachment.attachmentId.toString(),
+      },
+      data: {
+        answerId: attachment.answerId.toString(),
+      },
+    });
+
+    return attachment;
   }
 }

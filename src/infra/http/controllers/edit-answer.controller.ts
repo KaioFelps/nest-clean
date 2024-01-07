@@ -14,6 +14,7 @@ import { EditAnswerService } from "@/domain/forum/application/services/edit-answ
 
 const editAnswerBodySchema = z.object({
   content: z.string(),
+  attachments: z.string().uuid().array(),
 });
 
 const bodyValidationPipe = new ZodValidationPipe(editAnswerBodySchema);
@@ -27,7 +28,7 @@ export class EditAnswerController {
   @Put()
   @HttpCode(204)
   async handle(
-    @Body(bodyValidationPipe) { content }: EditAnswerBodySchema,
+    @Body(bodyValidationPipe) { content, attachments }: EditAnswerBodySchema,
     @Param("id") answerId: string,
     @CurrentUser() user: userTokenPayload,
   ) {
@@ -35,7 +36,7 @@ export class EditAnswerController {
 
     const result = await this.editAnswerService.execute({
       answerId,
-      attachmentIds: [],
+      attachmentIds: attachments,
       authorId: userId,
       content,
     });
