@@ -99,7 +99,7 @@ export class InMemoryQuestionRepository implements IQuestionRepository {
       createdAt: question.createdAt ?? undefined,
       updatedAt: question.updatedAt ?? undefined,
       questionId: question.id,
-      slug: question.slug.value,
+      slug: question.slug,
       title: question.title,
       bestAnswerID: question.bestAnswerId ?? undefined,
     });

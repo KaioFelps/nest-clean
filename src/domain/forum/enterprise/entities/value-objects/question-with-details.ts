@@ -1,6 +1,7 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { ValueObject } from "@/core/entities/value-object";
 import { Attachment } from "../attachment";
+import { Slug } from "./slug";
 
 export interface IQuestionDetails {
   questionId: UniqueEntityId;
@@ -8,7 +9,7 @@ export interface IQuestionDetails {
   bestAnswerID?: UniqueEntityId;
   author: string;
   title: string;
-  slug: string;
+  slug: Slug;
   content: string;
   createdAt: Date;
   updatedAt?: Date;
