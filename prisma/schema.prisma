@@ -111,4 +111,6 @@ model Notification {
   recipientId String @map("recipient_id")
 
   recipient User @relation(fields: [recipientId], references: [id])
+
+  @@map("notifications")
 }
