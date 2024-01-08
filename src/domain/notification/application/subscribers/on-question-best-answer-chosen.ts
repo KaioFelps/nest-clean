@@ -31,10 +31,10 @@ export class OnQuestionBestAnswerChosen implements EventHandler {
 
     if (answer) {
       await this.sendNotification.execute({
-        recipientId: answer.id.toString(),
+        recipientId: answer.authorId.toString(),
         title: "Sua resposta foi escolhida!",
         content: `A resposta que você enviou em "${question.title
-          .substring(30)
+          .substring(0, 20)
           .trimEnd()
           .concat("...")}" foi escolhida como a melhor resposta da pergunta.`,
       });
