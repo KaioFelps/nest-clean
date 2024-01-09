@@ -17,13 +17,16 @@ export class PrismaNotificationMapper {
   }
 
   static toDomain(prismaNotification: PrismaNotification): Notification {
-    const notification = Notification.create({
-      content: prismaNotification.content,
-      recipientId: new UniqueEntityId(prismaNotification.recipientId),
-      title: prismaNotification.title,
-      createdAt: prismaNotification.createdAt,
-      readAt: prismaNotification.readAt,
-    });
+    const notification = Notification.create(
+      {
+        content: prismaNotification.content,
+        recipientId: new UniqueEntityId(prismaNotification.recipientId),
+        title: prismaNotification.title,
+        createdAt: prismaNotification.createdAt,
+        readAt: prismaNotification.readAt,
+      },
+      new UniqueEntityId(prismaNotification.id),
+    );
 
     return notification;
   }
