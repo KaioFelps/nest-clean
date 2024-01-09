@@ -4,8 +4,14 @@ import {
   INotification,
   Notification,
 } from "@/domain/notification/enterprise/entities/notification";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { Injectable } from "@nestjs/common";
+import { PrismaNotificationMapper } from "@/infra/database/prisma/mappers/prisma-notification-mapper";
 
+@Injectable()
 export class MakeNotificationFactory {
+  constructor(private prisma: PrismaService) {}
+
   static execute(override: Partial<INotification> = {}, id?: UniqueEntityId) {
     const notification = Notification.create(
       {
@@ -16,6 +22,16 @@ export class MakeNotificationFactory {
       },
       id,
     );
+
+    return notification;
+  }
+
+  async createAndPersist(data: Partial<INotification>): Promise<Notification> {
+    const notification = MakeNotificationFactory.execute(data);
+
+    const prismaNotification = PrismaNotificationMapper.toPrisma(notification);
+
+    await this.prisma.notification.create({ data: prismaNotification });
 
     return notification;
   }
