@@ -8,11 +8,13 @@ import { IQuestionAttachmentRepository } from "@/domain/forum/application/reposi
 import { QuestionWithDetails } from "@/domain/forum/enterprise/entities/value-objects/question-with-details";
 import { PrismaQuestionWithDetailsMapper } from "../mappers/prisma-question-with-details-mapper";
 import { DomainEvents } from "@/core/events/domain-events";
+import { ICacheRepository } from "@/infra/cache/cache-repository";
 
 @Injectable()
 export class PrismaQuestionsRepository implements IQuestionRepository {
   constructor(
     private prisma: PrismaService,
+    private cacheRepository: ICacheRepository,
     private questionAttachmentRepository: IQuestionAttachmentRepository,
   ) {}
 
@@ -54,6 +56,8 @@ export class PrismaQuestionsRepository implements IQuestionRepository {
       this.questionAttachmentRepository.deleteMany(
         question.attachments.getRemovedItems(),
       ),
+
+      this.cacheRepository.delete(`question:${data.slug}:details`),
     ]);
 
     DomainEvents.dispatchEventsForAggregate(question.id);
@@ -76,6 +80,14 @@ export class PrismaQuestionsRepository implements IQuestionRepository {
   async findBySlugWithDetails(
     slug: string,
   ): Promise<QuestionWithDetails | null> {
+    const cacheHit = await this.cacheRepository.get(`question:${slug}:details`);
+
+    if (cacheHit) {
+      const cachedData: QuestionWithDetails = JSON.parse(cacheHit);
+
+      return cachedData;
+    }
+
     const question = await this.prisma.question.findUnique({
       where: {
         slug,
@@ -90,7 +102,14 @@ export class PrismaQuestionsRepository implements IQuestionRepository {
       return null;
     }
 
-    return PrismaQuestionWithDetailsMapper.toDomain(question);
+    const questionDetails = PrismaQuestionWithDetailsMapper.toDomain(question);
+
+    await this.cacheRepository.set(
+      `question:${slug}:details`,
+      JSON.stringify(questionDetails),
+    );
+
+    return questionDetails;
   }
 
   async findById(id: string): Promise<Question | null> {
