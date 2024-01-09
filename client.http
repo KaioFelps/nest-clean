@@ -32,7 +32,8 @@ Authorization: Bearer {{authToken}}
 
 {
     "title": "novas perguntas 3",
-    "content": "conteúdo da pergunta 2"
+    "content": "conteúdo da pergunta 2",
+    "attachments": []
 }
 
 ### 
